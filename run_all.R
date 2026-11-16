@@ -1,0 +1,16 @@
+local({
+  project <- normalizePath(".", winslash = "/", mustWork = TRUE)
+  if (!file.exists(file.path(project, "R", "01_data.R")))
+    stop("Run this script from the PRECISE-AI project directory.")
+  args <- if (interactive()) character() else commandArgs(trailingOnly = TRUE)
+  input <- if (length(args)) args[1] else Sys.getenv("PRECISE_AI_DATA", unset = file.path(project, "data", "PRECISE-AI.csv"))
+  output <- if (length(args) > 1L) args[2] else file.path(project, "output")
+  required <- c("logistf", "survey", "survival", "jsonlite")
+  missing <- required[!vapply(required, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))]
+  if (length(missing)) stop("Install required packages first: ", paste(missing, collapse = ", "))
+  if (!capabilities("cairo")) stop("R with Cairo PDF support is required.")
+  if (!file.exists(input)) stop("Place the analysis dataset at data/PRECISE-AI.csv or specify its path.")
+  for (module in c("01_data.R", "02_statistics_core.R", "03_per_protocol.R", "04_recent.R", "05_timing.R", "06_ecg.R", "07_utilization.R", "08_exports.R"))
+    sys.source(file.path(project, "R", module), envir = environment())
+  run_precise_ai(input, output, project)
+})
