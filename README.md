@@ -26,8 +26,6 @@ Open `PRECISE-AI.Rproj` in RStudio and run:
 source("run_all.R")
 ```
 
-All calculations and graphics are implemented in R. The project was verified with **R 4.5.0**, `logistf` **1.26.1**, `survey` **4.4-2**, `survival` **3.8-3**, and `jsonlite` **1.9.1**. Standard R packages provide the remaining calculations, plotting, and file input/output. No packages are installed automatically, and the analysis can run offline once its dependencies are installed.
-
 The only retained generated files are the **17 PDFs in `output/figures/`** and the **12 CSVs in `output/tables/`**. Repeated runs overwrite these files. Intermediate calculations are held in a temporary directory and removed when the run finishes.
 
 ## Project contents
